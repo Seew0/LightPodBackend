@@ -3,10 +3,10 @@ import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function createUser(
-    fullName: string, 
-    phoneNumber: string, 
-    location: string, 
-    userID: string, 
+    fullName: string,
+    phoneNumber: string,
+    location: string,
+    userID: string,
     email: string
 ): Promise<User | null> {
     try {
@@ -52,7 +52,7 @@ export async function addCredits(addCreds: number, userId: string): Promise<User
             return null;
         }
 
-        const updatedCred = data.credits + Math.abs(addCreds);
+        const updatedCred = (data.credits ?? 0) + Math.abs(addCreds);
 
         data = await prisma.user.update({
             where: {
@@ -81,7 +81,7 @@ export async function removeCredits(removeCreds: number, userId: string): Promis
             return null;
         }
 
-        const updatedCred = data.credits - Math.abs(removeCreds);
+        const updatedCred = (data.credits ?? 0) - Math.abs(removeCreds);
 
         data = await prisma.user.update({
             where: {
@@ -96,7 +96,7 @@ export async function removeCredits(removeCreds: number, userId: string): Promis
     } catch (error: any) {
         throw new Error(error.message);
     }
-    
+
 }
 
 export async function getCredits(userID: string): Promise<number | null> {

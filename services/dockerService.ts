@@ -1,4 +1,3 @@
-
 import Docker from 'dockerode';
 import { containerMap } from './containerMap';  // Import the container map
 
@@ -18,10 +17,16 @@ export const runContainer = async (imageName: string, userId: string, productId:
     const container = await docker.createContainer({
       Image: imageName,
       ExposedPorts: { "6901/tcp": {} },
+      Env: [
+        'VNC_PW=password'
+      ],
+      Cmd: ['--username', 'kasm_user', '--password', 'password'],
       HostConfig: {
         PortBindings: {
           "6901/tcp": [{ HostPort: "0" }]
-        }
+        },
+        ShmSize: 536870912,  // 512m in bytes
+        AutoRemove: true
       }
     });
 
@@ -42,7 +47,6 @@ export const runContainer = async (imageName: string, userId: string, productId:
     throw error;
   }
 };
-
 export const stopContainer = async (containerId: string, userId: string): Promise<void> => {
   try {
     const container = docker.getContainer(containerId);
