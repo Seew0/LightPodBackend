@@ -15,7 +15,7 @@ export async function adminLogin(email: string, password: string) {
         return null;
     }
     const token = uuid();
-    await adminAuth.set(token, data.email);
+    await adminAuth.set(token, data?.email);
 
     return token;
 }
@@ -58,7 +58,7 @@ export async function getApiKey(userID: string) {
     });
 
     console.log(data);
-    
+
     return data?.apikey;
 }
 
@@ -74,7 +74,7 @@ export async function updateCredits(userID: string, credits: number) {
         return null;
     }
 
-    const updatedCredits = data.credits + credits;
+    const updatedCredits = (data.credits ?? 0) + credits;
 
     if (updatedCredits < 0) {
         return "negative";

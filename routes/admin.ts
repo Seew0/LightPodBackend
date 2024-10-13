@@ -43,7 +43,7 @@ app.post("/login", async (req: LoginRequest, res: Response) => {  //TESTED
 });
 
 // Get price
-app.get("/getPrice", adminVerification, async (req: Request, res: Response) => {  //TESTED
+app.get("/getPrice", adminVerification, async (_: Request, res: Response) => {  //TESTED
     try {
         if (!process.env.COSTPERLEAD) {
             throw new Error("no price set");
@@ -80,7 +80,7 @@ app.post("/changePrice", adminVerification, async (req: ChangePriceRequest, res:
 });
 
 // Get all users
-app.get("/getAllUsers", adminVerification, async (req: Request, res: Response) => { //TESTED
+app.get("/getAllUsers", adminVerification, async (_: Request, res: Response) => { //TESTED
     try {
         const resp = await getAllUsers();
         res.status(200).json({ resp });
@@ -89,7 +89,7 @@ app.get("/getAllUsers", adminVerification, async (req: Request, res: Response) =
     }
 });
 
-app.get("/getAllApikeys", adminVerification, async (req: Request, res: Response) => { //TESTED
+app.get("/getAllApikeys", adminVerification, async (_: Request, res: Response) => { //TESTED
     try {
         const resp = await getAllApikeys();
         res.status(200).json({ resp });
@@ -111,7 +111,7 @@ app.post("/generateAPIkey", adminVerification, async (req: Request, res: Respons
     }
 });
 
-app.post("/getAPIkey",adminVerification, async (req: Request, res: Response) => {  //TESTED
+app.post("/getAPIkey", adminVerification, async (req: Request, res: Response) => {  //TESTED
     try {
         const { userID } = req.body;
         const resp = await getApiKey(userID);
