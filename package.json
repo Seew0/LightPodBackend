@@ -7,7 +7,7 @@
     "dev": "nodemon --exec ts-node ./server.ts",
     "postinstall": "npx prisma generate --schema ./prisma/schema.prisma && bash ./scripts/setup.sh",
     "migrate": "npx prisma migrate dev --name init",
-    "build": "tsc --build",
+    "build": "rm -rf dist && tsc --build",
     "start": "node ./dist/server.js"
   },
   "keywords": [],

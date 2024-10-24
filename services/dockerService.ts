@@ -20,7 +20,6 @@ export const runContainer = async (imageName: string, userId: string, productId:
       Env: [
         'VNC_PW=password'
       ],
-      Cmd: ['--username', 'kasm_user', '--password', 'password'],
       HostConfig: {
         PortBindings: {
           "6901/tcp": [{ HostPort: "0" }]
@@ -51,7 +50,7 @@ export const stopContainer = async (containerId: string, userId: string): Promis
   try {
     const container = docker.getContainer(containerId);
     await container.stop();
-    await container.remove();  // Optionally remove the container after stopping
+    // await container.remove();  // Optionally remove the container after stopping
     containerMap.removeContainer(userId, containerId);  // Remove from the map
     console.log(`Container ${containerId} stopped and removed.`);
   } catch (error: any) {
@@ -77,7 +76,7 @@ export const removeIdleContainers = async (): Promise<void> => {
       if (runningTime > IDLE_TIMEOUT_MS) {
         console.log(`Removing idle container: ${containerInfo.Id}`);
         await container.stop();
-        await container.remove();
+        // await container.remove();
 
         // Remove from the map using the new method
         const userId = containerMap.getUserIdByContainerId(containerInfo.Id);

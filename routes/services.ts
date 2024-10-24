@@ -13,8 +13,8 @@ router.post('/start-container', verifySessionToken, async (req: Request, res: Re
         const port = container.NetworkSettings.Ports["6901/tcp"][0]?.HostPort;
 
         if (port) {
-            // Redirect with userId and productId as parameters
-            res.redirect(`http://localhost:${port}?containerId=${container.Id}&userId=${userId}&productId=${productId}`);
+            const redirectUrl = `https://localhost:${port}?containerId=${container.Id}&userId=${userId}&productId=${productId}`;
+            res.status(200).json({ redirectUrl, ...container });
         } else {
             res.status(500).send('No exposed port found.');
         }
