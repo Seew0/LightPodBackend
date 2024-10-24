@@ -1,0 +1,19 @@
+# config.toml
+# This file is used to configure the images deployment
+# the images are auto pulled when setup is run hence by default only two are pulled to save time and memory
+# to pull more images, uncomment the images you want to pull
+# use cases: 
+# 1. to be used by the start up script to pull images beforehand
+# 2. to be used by the frontend to display the images that are available to be used
+
+[images]
+list = [
+  "kasmweb/chrome:1.16.0",
+  "kasmweb/ubuntu-jammy-desktop:1.16.0",
+  # "kasmweb/vs-code:1.16.0",
+  # "kasmweb/terminal:1.16.0",
+  # "kasmweb/zoom:1.16.0",
+  # "kasmweb/atom:1.14.0",
+  # "kasmweb/postman:1.16.0",
+  # Add other images as needed
+]
