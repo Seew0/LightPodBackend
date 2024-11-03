@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+    scroll-behavior: smooth;
+}
+
+.land1{
+    background-image: url("./assets/images/land5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+    background-attachment: fixed;
+}
+.signIn{
+    background-image: url("./assets/images/signIn.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+    background-attachment: fixed;
+}
+.land2{
+    background-image: url("./assets/images/land4.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+    background-attachment: fixed;
+}
+.land3{
+    background-image: url("./assets/images/land6.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+    background-attachment: fixed;
+}
+.pricing{
+    background-image: url("./assets/images/land-bg-2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+    background-attachment: fixed;
+    background-color: rgb(247, 238, 238);
+}
