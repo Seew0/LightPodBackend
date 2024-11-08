@@ -10,6 +10,18 @@ const NewContainer = () => {
   
   const [loading,setLoading] = useState(false)
 
+  const storeLog = async(logId:string)=>{
+    try{
+      const res = axios.post("http://localhost:5050/api/logs/getLog",logId);
+      console.log(res);
+      
+    }
+    catch(err){
+      console.log(err);
+      
+    }
+  }
+
   const startContainer = async (userId: string, imageName: string, productId: string) => {
     setLoading(true);
     try {
@@ -21,6 +33,7 @@ const NewContainer = () => {
       
       
       if (res) {
+        storeLog(imageName);
         window.open(res, '_blank');
       } else {
         console.error("URL not found in response");
