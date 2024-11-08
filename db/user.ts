@@ -1,11 +1,10 @@
 import { PrismaClient, User } from '@prisma/client';
+import { v4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
 export async function createUser(
     fullName: string,
-    phoneNumber: string,
-    location: string,
     userID: string,
     email: string
 ): Promise<User | null> {
@@ -15,9 +14,7 @@ export async function createUser(
                 UserID: userID,
                 email: email,
                 name: fullName,
-                phoneNumber: phoneNumber,
-                location: location,
-                credits: 0,
+                apikey: v4()
             },
         });
 
@@ -40,74 +37,39 @@ export async function getUser(userID: string): Promise<User | null> {
     }
 }
 
-export async function addCredits(addCreds: number, userId: string): Promise<User | null> {
+export async function updateUserName(name: string, userID: string): Promise<User | null> {
     try {
-        let data = await prisma.user.findUnique({
+        const user = await prisma.user.update({
             where: {
-                UserID: userId,
-            },
-        });
-
-        if (!data) {
-            return null;
-        }
-
-        const updatedCred = (data.credits ?? 0) + Math.abs(addCreds);
-
-        data = await prisma.user.update({
-            where: {
-                UserID: userId,
+                UserID: userID,
             },
             data: {
-                credits: updatedCred,
+                name: name,
             },
         });
-
-        return data;
-    } catch (error: any) {
-        throw new Error(error.message);
-    }
-}
-
-export async function removeCredits(removeCreds: number, userId: string): Promise<User | null> {
-    try {
-        let data = await prisma.user.findUnique({
-            where: {
-                UserID: userId,
-            },
-        });
-
-        if (!data) {
-            return null;
+        if (!user) {
+            throw new Error("User not found");
         }
 
-        const updatedCred = (data.credits ?? 0) - Math.abs(removeCreds);
-
-        data = await prisma.user.update({
-            where: {
-                UserID: userId,
-            },
-            data: {
-                credits: updatedCred,
-            },
-        });
-
-        return data;
+        return user;
     } catch (error: any) {
         throw new Error(error.message);
     }
 
 }
 
-export async function getCredits(userID: string): Promise<number | null> {
+export async function deleteUser(userID: string): Promise<User | null> {
     try {
-        const data = await prisma.user.findUnique({
+        const user = await prisma.user.delete({
             where: {
                 UserID: userID,
             },
         });
+        if (!user) {
+            throw new Error("User not found");
+        }
 
-        return data ? data.credits : null;
+        return user;
     } catch (error: any) {
         throw new Error(error.message);
     }

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { createUser, getUser, addCredits } from '../db/user';
+import { createUser, getUser, updateUserName, deleteUser } from '../db/user';
 import verifySessionToken from '../middleware/supabaseAuth';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -10,8 +10,8 @@ app.post("/register", verifySessionToken, async (req: Request, res: Response): P
     try {
         const userID = (req as any).user.id;
         const email = (req as any).user.email;
-        const { fullName, phoneNumber, location } = req.body;
-        const user = await createUser(fullName, phoneNumber, location, userID, email);
+        const { name } = req.body;
+        const user = await createUser(name, userID, email);
 
         if (!user) {
             res.status(400).json({ message: "User already exists" });
@@ -41,39 +41,38 @@ app.get("/getUser", verifySessionToken, async (req: Request, res: Response): Pro
     }
 });
 
-app.post("/addCredits", verifySessionToken, async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { credits } = req.body;
-        const userID = (req as any).user.id;
-        const state = await addCredits(credits, userID);
-
-        if (!state) {
-            res.status(400).json({ message: "Failed to add credits" });
-            return;
-        }
-
-        res.status(200).json({ message: `Credits added successfully balance: ${state.credits}` });
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-app.get("/getCredits", verifySessionToken, async (req: Request, res: Response): Promise<void> => {
+app.post("/updateUserName", verifySessionToken, async (req: Request, res: Response): Promise<void> => {
     try {
         const userID = (req as any).user.id;
-        const user = await getUser(userID);
+        const { name} = req.body;
+        const user = await updateUserName(name, userID);
 
         if (!user) {
             res.status(404).json({ message: "User not found" });
             return;
         }
 
-        res.status(200).json({ credits: user.credits });
+        res.status(200).json({ message: "User name updated successfully", user });
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
 });
 
+app.post("/deleteUser", verifySessionToken, async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userID = (req as any).user.id;
+        const user = await deleteUser(userID);
+
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+
+        res.status(200).json({ message: "User deleted successfully" });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 export default app;
 

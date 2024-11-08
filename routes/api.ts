@@ -1,24 +1,21 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
+import { createLog, updateTerminateTime } from "../db/log";
+import apiAuth from '../middleware/apiAuth';
 import { runContainer, stopContainer } from '../services/dockerService';
-import verifySessionToken from '../middleware/supabaseAuth';
-import {createLog, updateTerminateTime} from "../db/log"
 import { generateSlug } from '../util/slugCreater';
-
 const app = Router();
 
-// POST route to start a Docker container and redirect to its exposed port
-app.post('/start-container', verifySessionToken, async (req: Request, res: Response) => {
+app.post('/start-container', apiAuth, async (req: Request, res: Response) => {
     const userId = (req as any).user.id;
     const { imageName, productId } = req.body;
     try {
         const container = await runContainer(imageName, userId, productId);
         const port = container.NetworkSettings.Ports["6901/tcp"][0]?.HostPort;
-
         if (port) {
             const redirectUrl = `https://localhost:${port}?containerId=${container.Id}&userId=${userId}&productId=${productId}`;
             const containerName = generateSlug()
-            const log = await createLog(container.Id, userId,container.Id,containerName)
-            res.status(200).json({ redirectUrl, ...container, message:`log created ${log.LogID}` });
+            const log = await createLog(container.Id, userId, container.Id, containerName)
+            res.status(200).json({ redirectUrl, ...container, message: `log created ${log.LogID}` });
         } else {
             res.status(500).send('No exposed port found.');
         }
@@ -28,7 +25,7 @@ app.post('/start-container', verifySessionToken, async (req: Request, res: Respo
 });
 
 // POST route to stop a running container
-app.post('/stop-container', verifySessionToken, async (req: Request, res: Response) => {
+app.post('/stop-container', apiAuth, async (req: Request, res: Response) => {
     const { LogID, userId } = req.body;
     try {
         await stopContainer(LogID, userId);
@@ -38,5 +35,6 @@ app.post('/stop-container', verifySessionToken, async (req: Request, res: Respon
         res.status(500).send(`Error stopping container: ${error.message}`);
     }
 });
+
 
 export default app;
