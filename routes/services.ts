@@ -6,7 +6,7 @@ import verifySessionToken from '../middleware/supabaseAuth';
 const router = Router();
 
 // POST route to start a Docker container and redirect to its exposed port
-router.post('/start-container', verifySessionToken, async (req: Request, res: Response) => {
+router.post('/start-container',  async (req: Request, res: Response) => {
     const { imageName, userId, productId } = req.body;
     try {
         const container = await runContainer(imageName, userId, productId);
