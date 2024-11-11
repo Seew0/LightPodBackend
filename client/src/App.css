@@ -13,11 +13,19 @@ html{
     background-position: right;
     background-attachment: fixed;
 }
+
 .signIn{
     background-image: url("./assets/images/signIn.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: right;
+    background-attachment: fixed;
+}
+.signin{
+    background-image: url("./assets/images/land4.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
 }
 .land2{
