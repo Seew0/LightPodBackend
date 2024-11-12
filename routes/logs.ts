@@ -1,9 +1,19 @@
 import { Request, Response, Router } from 'express';
 import verifySessionToken from "../middleware/adminAuth";
-import { deleteLog, getAllUserLogs, getLog } from '../db/log';
+import { createLog, deleteLog, getAllUserLogs, getLog } from '../db/log';
+import { v4 } from 'uuid';
 
 const app = Router();
 
+app.post("/createLog",verifySessionToken, async (req: Request,res: Response): Promise<void> =>{
+    try {
+        const userID = (req as any).id;
+        const newLog = await createLog(v4(),userID,"13211424","iamnjdans")
+        res.status(200).json({message: newLog})
+    } catch (error) {
+        
+    }
+});
 app.post("/getLog", verifySessionToken, async (req: Request, res: Response): Promise<void> => {
     try {
         const userID = (req as any).id;
