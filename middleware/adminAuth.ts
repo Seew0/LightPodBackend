@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { adminAuth } from "../db/admindb";
+import { NextFunction, Request, Response } from "express";
+import { adminAuth } from "../db/admindb/index";
+// import { adminAuth } from "../../db/enrichminion/enrichminionadmindb/index";
 
 const adminVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -14,6 +15,7 @@ const adminVerification = async (req: Request, res: Response, next: NextFunction
     }
 
     if (await adminAuth.has(accessToken)) {
+      (req as any).id = accessToken;
       next();
     } else {
       throw new Error("Unauthorized");
