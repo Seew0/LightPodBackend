@@ -16,7 +16,7 @@
   "dependencies": {
     "@prisma/client": "^5.18.0",
     "@supabase/supabase-js": "^2.45.1",
-    "better-sqlite3": "^11.3.0",
+    "better-sqlite3": "^11.5.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dockerode": "^4.0.2",
@@ -24,6 +24,7 @@
     "express": "^4.19.2",
     "form-data": "^4.0.0",
     "quick.db": "^9.1.7",
+    "quickdb": "^1.0.5",
     "rm": "^0.1.8",
     "uuid": "^10.0.0"
   },

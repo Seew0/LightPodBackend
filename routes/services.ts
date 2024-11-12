@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { runContainer, stopContainer } from '../services/dockerService';
-import verifySessionToken from '../middleware/supabaseAuth';
+import verifySessionToken from '../middleware/adminAuth';
 import {createLog, updateTerminateTime} from "../db/log"
 import { generateSlug } from '../util/slugCreater';
 
@@ -8,7 +8,7 @@ const app = Router();
 
 // POST route to start a Docker container and redirect to its exposed port
 app.post('/start-container', verifySessionToken, async (req: Request, res: Response) => {
-    const userId = (req as any).user.id;
+    const userId = (req as any).id;
     const { imageName, productId } = req.body;
     try {
         const container = await runContainer(imageName, userId, productId);
@@ -29,7 +29,8 @@ app.post('/start-container', verifySessionToken, async (req: Request, res: Respo
 
 // POST route to stop a running container
 app.post('/stop-container', verifySessionToken, async (req: Request, res: Response) => {
-    const { LogID, userId } = req.body;
+    const userId = (req as any).id;
+    const { LogID } = req.body;
     try {
         await stopContainer(LogID, userId);
         await updateTerminateTime(LogID);

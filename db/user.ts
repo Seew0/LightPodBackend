@@ -3,12 +3,14 @@ import { v4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
+import {adminAuth} from '../db/admindb/index';
 export async function createUser(
     fullName: string,
-    userID: string,
     email: string
 ): Promise<User | null> {
     try {
+        const userID = v4();
+
         const user = await prisma.user.create({
             data: {
                 UserID: userID,
@@ -17,6 +19,10 @@ export async function createUser(
                 apikey: v4()
             },
         });
+        await adminAuth.set(user.UserID, email);
+
+        //login
+        await adminAuth.set(user.email, user.UserID);
 
         return user;
     } catch (error: any) {
