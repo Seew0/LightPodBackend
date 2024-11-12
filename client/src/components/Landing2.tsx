@@ -1,6 +1,7 @@
 import React from 'react'
 import Lottie from 'react-lottie-player'
 import landing2 from '../assets/animations/landing2.json'
+import { Link } from 'react-router-dom';
 const Landing2 = () => {
   return (
     <div className="flex flex-row-reverse bg-blue-800 h-[100vh] land3">
@@ -14,9 +15,11 @@ const Landing2 = () => {
             manage and run custom applications in secure Docker environments.
             Perfect for all your testing and development needs!
           </h2>
+          <Link to="/signIn">
           <button className="rounded-xl w-[7rem] h-10 bg-blue-900 text-white font-bold">
             Get Started
           </button>
+          </Link>
         </div>
       </div>
       <div className="w-[55%] mt-32">
